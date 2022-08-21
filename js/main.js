@@ -4,7 +4,7 @@ let page = "1";
 
 function refresh(){
     const removeTbody = document.querySelector("#crypto");
-    removeTbody.remove(); 
+        removeTbody.remove(); 
 
     const table = document.querySelector("table");
     const refreshTbody = document.createElement("tbody");
@@ -29,8 +29,6 @@ let previous = document.getElementById("pvuBtn");
         refresh();
     };
 
-   // previous.setAttribute("aria-disabled","true");
-
 load();
 function load() {
   async function getCrypto() {
@@ -43,13 +41,20 @@ function load() {
 
   getCrypto().then((data) => {
     let size = Object.keys(data).length;
+    
     for (let i = 0; i < size; i++) {
       let coin = data[i];
       let range = document.createRange();
       let currentPrice = coin.current_price;
+
       let price1h = coin.price_change_percentage_1h_in_currency.toFixed(1);
       let price24h = coin.price_change_percentage_24h_in_currency.toFixed(1);
       let price7d = coin.price_change_percentage_7d_in_currency.toFixed(1);
+
+      if (price1h < -0) { style1 = "red" } else { style1 = "green" }
+      if (price24h < -0) { style2 = "red" } else { style2 = "green" }
+      if (price7d < -0) { style3 = "red" } else { style3 = "green" }
+
       const tableData = `
             <td>${coin.market_cap_rank}</td>
             <td><img src="${coin.image}"></img> ${coin.name}</td>
@@ -57,9 +62,9 @@ function load() {
               style: "currency",
               currency: "USD",
             })}</td>
-            <td id="1h">${price1h}%</td>
-            <td id="24h">${price24h}%</td>
-            <td id="7d">${price7d}%</td>
+            <td id="${style1}">${price1h}%</td>
+            <td id="${style2}">${price24h}%</td>
+            <td id="${style3}">${price7d}%</td>
             <td>${coin.total_volume.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
@@ -70,27 +75,25 @@ function load() {
             })}</td>          
         `;
 
-      range.selectNode(document.getElementsByTagName("tr").item(i));
+      range.selectNode(document.getElementsByTagName("tr").item(i));    
       const documentFragment = range.createContextualFragment(tableData);
       const tbody = document.querySelector("tbody");
             tbody.setAttribute("id","crypto");
-      tbody.append(documentFragment);
-      
-      const as = document.getElementById("1h");
-      //  for (const a of as) {
-            if (price1h <= -0) {
-                as.style.color = 'red';
-            } else {
-                as.style.color = 'green';
-            }
-       // }
+            tbody.append(documentFragment);
     }
   });
 
-  const checkPvu = document.querySelector("#pvu");
-    if (page <= 1) {
-        checkPvu.classList.add("disabled");
-    } else {
-        checkPvu.classList.remove("disabled");
-    }
+    const checkPvu = document.querySelector("#pvu");
+        if (page <= 1) {
+            checkPvu.classList.add("disabled");
+        } else {
+            checkPvu.classList.remove("disabled");
+        }
+
+    const checkNxt = document.querySelector("#nxt");
+        if (page >= 25) {
+            checkNxt.classList.add("disabled");
+        } else {
+            checkNxt.classList.remove("disabled");
+        }
 }

@@ -1,3 +1,21 @@
+body {
+  background-color: #202030;
+}
+
 img {
     max-width: 8%;
-  }
+}
+
+#red {
+  color:red;
+}
+
+#green {
+  color:green;
+}
+
+h1 {
+  color:white;
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
