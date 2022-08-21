@@ -3,13 +3,10 @@ let forPage = "10";
 let page = "1";
 
 function refresh(){
-    const removeTbody = document.querySelector("#crypto");
-        removeTbody.remove(); 
-
-    const table = document.querySelector("table");
-    const refreshTbody = document.createElement("tbody");
-        table.append(refreshTbody);
-    
+    for (let i = 0;i < forPage; i++){
+        const removeTbody = document.querySelector("tbody tr");
+        removeTbody.remove();
+    }   
     load();
 }
 
@@ -78,7 +75,6 @@ function load() {
       range.selectNode(document.getElementsByTagName("tr").item(i));    
       const documentFragment = range.createContextualFragment(tableData);
       const tbody = document.querySelector("tbody");
-            tbody.setAttribute("id","crypto");
             tbody.append(documentFragment);
     }
   });
