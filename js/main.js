@@ -2,29 +2,29 @@ let currency = "usd";
 let forPage = "10";
 let page = "1";
 
-function refresh(){
-    for (let i = 0;i < forPage; i++){
-        const removeTbody = document.querySelector("tbody tr");
-        removeTbody.remove();
-    }   
-    load();
+function refresh() {
+  for (let i = 0; i < forPage; i++) {
+    const removeTr = document.querySelector("tbody tr");
+    removeTr.remove();
+  }
+  load();
 }
 
 let next = document.getElementById("nxtBtn");
-    next.addEventListener("click" , nextPage);
+next.addEventListener("click", nextPage);
 
-    function nextPage() {  
-        page++;
-        refresh();
-    };
+function nextPage() {
+  page++;
+  refresh();
+}
 
 let previous = document.getElementById("pvuBtn");
-    previous.addEventListener("click" , previousPage);
-    
-    function previousPage() {     
-        page--;       
-        refresh();
-    };
+previous.addEventListener("click", previousPage);
+
+function previousPage() {
+  page--;
+  refresh();
+}
 
 load();
 function load() {
@@ -37,9 +37,7 @@ function load() {
   }
 
   getCrypto().then((data) => {
-    let size = Object.keys(data).length;
-    
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i < forPage; i++) {
       let coin = data[i];
       let range = document.createRange();
       let currentPrice = coin.current_price;
@@ -48,9 +46,21 @@ function load() {
       let price24h = coin.price_change_percentage_24h_in_currency.toFixed(1);
       let price7d = coin.price_change_percentage_7d_in_currency.toFixed(1);
 
-      if (price1h < -0) { style1 = "red" } else { style1 = "green" }
-      if (price24h < -0) { style2 = "red" } else { style2 = "green" }
-      if (price7d < -0) { style3 = "red" } else { style3 = "green" }
+      if (price1h < -0) {
+        style1 = "red";
+      } else {
+        style1 = "green";
+      }
+      if (price24h < -0) {
+        style2 = "red";
+      } else {
+        style2 = "green";
+      }
+      if (price7d < -0) {
+        style3 = "red";
+      } else {
+        style3 = "green";
+      }
 
       const tableData = `
             <td>${coin.market_cap_rank}</td>
@@ -59,9 +69,9 @@ function load() {
               style: "currency",
               currency: "USD",
             })}</td>
-            <td id="${style1}">${price1h}%</td>
-            <td id="${style2}">${price24h}%</td>
-            <td id="${style3}">${price7d}%</td>
+            <td><span class="${style1}">${price1h}%</span></td>
+            <td><span class="${style2}">${price24h}%</span></td>
+            <td><span class="${style3}">${price7d}%</span></td>
             <td>${coin.total_volume.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
@@ -72,24 +82,24 @@ function load() {
             })}</td>          
         `;
 
-      range.selectNode(document.getElementsByTagName("tr").item(i));    
+      range.selectNode(document.getElementsByTagName("tr").item(i));
       const documentFragment = range.createContextualFragment(tableData);
       const tbody = document.querySelector("tbody");
-            tbody.append(documentFragment);
+      tbody.append(documentFragment);
     }
   });
 
-    const checkPvu = document.querySelector("#pvu");
-        if (page <= 1) {
-            checkPvu.classList.add("disabled");
-        } else {
-            checkPvu.classList.remove("disabled");
-        }
+  const checkPvu = document.querySelector("#pvu");
+  if (page <= 1) {
+    checkPvu.classList.add("disabled");
+  } else {
+    checkPvu.classList.remove("disabled");
+  }
 
-    const checkNxt = document.querySelector("#nxt");
-        if (page >= 25) {
-            checkNxt.classList.add("disabled");
-        } else {
-            checkNxt.classList.remove("disabled");
-        }
+  const checkNxt = document.querySelector("#nxt");
+  if (page >= 25) {
+    checkNxt.classList.add("disabled");
+  } else {
+    checkNxt.classList.remove("disabled");
+  }
 }

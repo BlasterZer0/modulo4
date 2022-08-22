@@ -7,11 +7,11 @@ img {
     height: auto;
 }
 
-#red {
+.red {
   color:red;
 }
 
-#green {
+.green {
   color:green;
 }
 
